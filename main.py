@@ -24,12 +24,12 @@ params_user = {
             'v': version,
         }
 get_user_data_params = {
-        'fields': 'city, sex, relation, bdate'
+        'fields': 'city, sex, relation, bdate, common_count, interests, books, games, movies, music'
     }
 
 search_users_data_params = {
         'method': 'users.search',
-        'max_count': 1000,
+        'max_count': 10,
         'values': {
             'city': '',
             'age_from': 0,
@@ -42,6 +42,8 @@ search_users_data_params = {
 
 def get_user_data(user_id, params):
     user_data = api_user.users.get(user_id=user_id, **params)
+    for param in params['fields'].split(', ')[5:]:
+        user_data[0][param] = user_data[0][param].split(', ')
     return user_data
 
 
@@ -56,10 +58,27 @@ def search_users(user_data, params):
     return users_data
 
 
+def get_full_data_users(users_data, params):
+    users_list_full = []
+    for user in users_data:
+        user_data_full = get_user_data(user['id'], params)
+        users_list_full.append(user_data_full)
+    return users_list_full
+
+
+def get_common_interests(user_data, users_list):
+    for interes in user_data['interests']:
+        common_interests_list = []
+
+
 # 27944409 - я
+# 12126259"- Марина
 # Настя Пигасова - 141040434
 user_data = get_user_data('27944409', get_user_data_params)
 users_data = search_users(user_data, search_users_data_params)
+full_users_data = get_full_data_users(users_data, get_user_data_params)
+
+
 
 
 def users_iterator(users_data):
