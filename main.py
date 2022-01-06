@@ -1,91 +1,12 @@
-from random import randrange
-import requests
-# https://oauth.vk.com/authorize?client_id=8041748&display=page&scope=stats,photos,offline&response_type=token&v=5.131
-import vk_api
-from vk_api import VkTools
-from vk_api.longpoll import VkLongPoll, VkEventType
 
-from config import token_group, token_user, version
+from vk_api.longpoll import VkEventType
 
-vk_bot = vk_api.VkApi(token=token_group)
-vk_user = vk_api.VkApi(token=token_user)
-api_bot = vk_bot.get_api()
-api_user = vk_user.get_api()
-longpoll = VkLongPoll(vk_bot)
-city = ''
-
-url = 'https://api.vk.com/method/'
-params_bot = {
-            'access_token': token_group,
-            'v': version,
-        }
-params_user = {
-            'access_token': token_user,
-            'v': version,
-        }
-get_user_data_params = {
-        'fields': 'city, sex, relation, bdate, common_count, interests, books, games, movies, music'
-    }
-
-search_users_data_params = {
-        'method': 'users.search',
-        'max_count': 10,
-        'values': {
-            'city': '',
-            'age_from': 0,
-            'age_to': 0,
-            'fields': 'city, sex, relation, bdate',
-        },
-
-    }
-
-
-def get_user_data(user_id, params):
-    user_data = api_user.users.get(user_id=user_id, **params)
-    for param in params['fields'].split(', ')[5:]:
-        user_data[0][param] = user_data[0][param].split(', ')
-    return user_data
-
-
-def search_users(user_data, params):
-    params['values']['city'] = user_data[0]['city']['id']
-    # params['values']['city'] = 2
-    params['values']['age_from'] = 30
-    params['values']['age_to'] = 40
-
-    users_data = VkTools(api_user).get_all_iter(**params)
-
-    return users_data
-
-
-def get_full_data_users(users_data, params):
-    users_list_full = []
-    for user in users_data:
-        user_data_full = get_user_data(user['id'], params)
-        users_list_full.append(user_data_full)
-    return users_list_full
-
-
-def get_common_interests(user_data, users_list):
-    for interes in user_data['interests']:
-        common_interests_list = []
-
-
-# 27944409 - я
-# 12126259"- Марина
-# Настя Пигасова - 141040434
-user_data = get_user_data('27944409', get_user_data_params)
-users_data = search_users(user_data, search_users_data_params)
-full_users_data = get_full_data_users(users_data, get_user_data_params)
-
-
-
+from bot.vkinder import VKinder
 
 def users_iterator(users_data):
     next_element_exist = True
     user_list = []
     while next_element_exist:
-        i = 0
         try:
             user = next(users_data)
         except StopIteration:
@@ -93,10 +14,6 @@ def users_iterator(users_data):
         else:
             user_list.append(user)
     print(len(user_list))
-
-
-def write_msg(user_id, message):
-    vk_bot.method('messages.send', {'user_id': user_id, 'message': message,  'random_id': randrange(10 ** 7),})
 
 
 def main():
@@ -132,6 +49,6 @@ def main():
                 else:
                     write_msg(event.user_id, "Не поняла вашего ответа...")
 
-
+#
 # if __name__ == "__main__":
 #     main()
