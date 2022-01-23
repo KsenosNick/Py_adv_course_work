@@ -18,6 +18,7 @@
 1. Для создания приложения перейти по ссылке https://vk.com/editapp?act=create
 2. Выбрать Standalone-приложение
 ![Создание приложения](https://downloader.disk.yandex.ru/preview/37e8cf7c054b10f2e2ad3fb7dd16e9a147f1d426e05ea3ca4ecb73cc28501487/61ed3da8/_RpJweSoGG3hG5QZTpaoZicoCghlNljH_cHLHB2gBQgOCurgX57YLzaEP8scyXyuJMzKdcdWxVzzbJClhRRPAA%3D%3D?uid=0&filename=Create_application_1.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048)
+
 3. Перейти в настройки, влючить Open Api
 4. В поле *адрес сайта* ввести http://localhost
 5. В поле базовый домен ввести localhost
