@@ -1,6 +1,5 @@
 from bot.vkinder import VKinder
-from config import token_user, token_group, version
-
+from settings.config import token_user, token_group, version
 
 
 if __name__ == "__main__":
