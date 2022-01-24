@@ -1,7 +1,7 @@
 
 from random import randrange
 import vk_api
-from sqlalchemy import desc
+from sqlalchemy import desc, or_, text
 from vk_api import VkTools
 from vk_api.longpoll import VkLongPoll, VkEventType
 from datetime import datetime
@@ -38,7 +38,7 @@ class VKinder:
 
     search_users_data_params = {
         'method': 'users.search',
-        'max_count': 1000,
+        'max_count': 100,
         'values': {
             'city': '',
             'age_from': 0,
@@ -170,8 +170,9 @@ class VKinder:
         users = users.split(', ')
         for user in users:
             user = user.split(' ')
-            session.query(VKUser).filter(VKUser.first_name == user[0] and VKUser.first_name == user[1]).update(
+            session.query(VKUser).filter(VKUser.first_name == user[0], VKUser.last_name == user[1]).update(
                 {"black_list": True})
+
         session.commit()
 
     def add_to_favorites(self, users):
@@ -179,7 +180,7 @@ class VKinder:
         users = users.split(', ')
         for user in users:
             user = user.split(' ')
-            session.query(VKUser).filter(VKUser.first_name == user[0] and VKUser.first_name == user[1]).update(
+            session.query(VKUser).filter(VKUser.first_name == user[0], VKUser.last_name == user[1]).update(
                 {"favorites_list": True})
         session.commit()
 
@@ -187,12 +188,26 @@ class VKinder:
         session = Session()
         Base.metadata.create_all(engine)
         pairs = session.query(VKUser).filter(
-            VKUser.relation == 1 and VKUser.relation == 6 and VKUser.black_list != True).order_by(
-            desc(VKUser.common_count))
+            or_(VKUser.relation == 1, VKUser.relation == 6), VKUser.black_list != True).order_by(
+            VKUser.age_difference, desc(VKUser.common_count))
         for user in pairs:
             photos = session.query(Photo).filter(
-                Photo.user_id == user.id).order_by(desc(Photo.likes_count), desc(Photo.comments_count)).limit(3)
+                Photo.user_id == user.id).order_by(text("comments_count + likes_count desc")).limit(3)
+            print(photos)
             message = f"{user.first_name} {user.last_name} {'https://vk.com/id' + str(user.user_id)}"
+            self.write_msg(user_id, message)
+            for photo in photos:
+                self.write_msg(user_id, photo.url)
+
+    def show_favorites(self, user_id):
+        session = Session()
+        Base.metadata.create_all(engine)
+        favorites = session.query(VKUser).filter(VKUser.favorites_list == True).order_by(
+            VKUser.age_difference, desc(VKUser.common_count))
+        for favorite in favorites:
+            photos = session.query(Photo).filter(
+                Photo.user_id == favorite.id).order_by(desc(Photo.likes_count), desc(Photo.comments_count)).limit(3)
+            message = f"{favorite.first_name} {favorite.last_name} {'https://vk.com/id' + str(favorite.user_id)}"
             self.write_msg(user_id, message)
             for photo in photos:
                 self.write_msg(user_id, photo.url)
@@ -217,13 +232,19 @@ class VKinder:
                         self.write_msg(event.user_id, f"База пополнена")
                         self.show_pairs(event.user_id)
 
+                    elif request == 'Покажи, кто есть':
+                        self.show_pairs(event.user_id)
+
+                    elif request == 'Покажи избранных':
+                        self.show_favorites(event.user_id)
+
                     elif 'Добавь в избранное: ' in request:
-                        favorites = request.replace('Добавь в избранное:')
+                        favorites = request.replace('Добавь в избранное: ', '')
                         self.add_to_favorites(favorites)
 
                     elif 'Добавь в черный список: ' in request:
-                        favorites = request.replace('Добавь в избранное:', '')
-                        self.add_to_favorites(favorites)
+                        black_list = request.replace('Добавь в черный список: ', '')
+                        self.add_to_black_list(black_list)
 
                     elif request == "Пока":
                         self.write_msg(event.user_id, "Пока((")
