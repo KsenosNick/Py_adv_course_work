@@ -1,10 +1,9 @@
 
 import sqlalchemy as sq
-# from sqlalchemy import UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
-from database.db_config import db_user, db_password, host_name, port, db_name
+from settings.db_config import db_user, db_password, host_name, port, db_name
 
 Base = declarative_base()
 
@@ -28,6 +27,7 @@ class VKUser(Base):
     relation = sq.Column(sq.Integer)
     common_count = sq.Column(sq.Integer)
     black_list = sq.Column(sq.Boolean)
+    favorites_list = sq.Column(sq.Boolean)
     photos = relationship("Photo")
 
     def __str__(self):
