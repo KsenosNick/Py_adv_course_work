@@ -10,25 +10,26 @@
 Создать группу в VK
 1. Создать группу в VK
 2. Зайти в Управление -> Работа с API. Создать ключ
-![Получение токена](https://downloader.disk.yandex.ru/preview/210efbd3aad9153c3c1265650cf3792834e60979222c0aca38d0e3b7670f995b/61ec659a/xTJu7CXGT7uCiIbtt3ceY8dOTrRPQMF3lbac3PlUJAWsNKb2Gs2qzzvv29bgm-QaqQ2UvGY2wIRD2Sqd9X79sA%3D%3D?uid=0&filename=VKinder_group_token_1.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048)
+![image](https://user-images.githubusercontent.com/87200878/150820401-8d9aa784-d644-41f6-a550-f7149f2814e0.png)
 3. Включить возможность писать сообщения в группу. Управление -> Сообщения -> Сообщения сообщества: включить.
 4. Настройки бота. Возможности бота: Включены
-![Настройки группы для бота](https://downloader.disk.yandex.ru/preview/aa21153ae724c5e54be13340044729ecea16cae840a2caaaaa1a3cc8248ba650/61ec6736/8Ax2InMx0FaT0KN6IefTtBm2WXbL8928tvBvup2fuJ6lKcHGxVqNZPmATpC8aNLH2UzkFCXqLW1iY3JBjLY24A%3D%3D?uid=0&filename=VKinder_group_settings.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048)
+![image](https://user-images.githubusercontent.com/87200878/150820200-3a39b0d7-7421-4864-bf03-72fe0379af3d.png)
 ### Получение токена пользователя
 1. Для создания приложения перейти по ссылке https://vk.com/editapp?act=create
 2. Выбрать Standalone-приложение
-![Создание приложения](https://downloader.disk.yandex.ru/preview/37e8cf7c054b10f2e2ad3fb7dd16e9a147f1d426e05ea3ca4ecb73cc28501487/61ed3da8/_RpJweSoGG3hG5QZTpaoZicoCghlNljH_cHLHB2gBQgOCurgX57YLzaEP8scyXyuJMzKdcdWxVzzbJClhRRPAA%3D%3D?uid=0&filename=Create_application_1.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048)
+![image](https://user-images.githubusercontent.com/87200878/150819996-25af974b-1369-49c9-a8ee-fef0c26a7450.png)
+
 
 3. Перейти в настройки, влючить Open Api
 4. В поле *адрес сайта* ввести http://localhost
 5. В поле базовый домен ввести localhost
-![Настройки приложения](https://downloader.disk.yandex.ru/preview/92fecfb119038d8595085201eab5ca3572870c0223ef9db1bf637b212f70b01f/61ed45fc/3uf50F-aGzGJ_7jXR2cNiradiKMJrD7bMXWRjUm0ScjxXEF1NnBZaBEseS_X3XceGNXSA8XJlyQYUE7AAOikLQ%3D%3D?uid=0&filename=Application_settings.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=2048x2048)
+![image](https://user-images.githubusercontent.com/87200878/150832620-841c0086-bf5e-415c-a9f6-d74b894db1e2.png)
 6. Сохранить изменения
 7. Скопировать id приложения в ссылку
 https://oauth.vk.com/authorize?client_id=1&display=page&scope=stats,offline&response_type=token&v=5.131 вместо 1 вставить id **вашего** приложения. Не забудьте указать scope: https://vk.com/dev/permissions
 8. Нажать разрешить
 9. Сохранить токен
-![Сохрание токена](https://downloader.disk.yandex.ru/preview/67d1480d28f249d69253909325561403f02ad9b5bc887755c3503931cf0940bf/61ed489f/Ndem7qusIrQWIP9oHRpI14SiXAxg48KZzq__sm2EaQStTeXnkNUtKBiks6ZdA2rSxb5qaOnT0UfPniki7iUSdw%3D%3D?uid=0&filename=2022-01-23_11-20-39.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=1872x940)
+![image](https://user-images.githubusercontent.com/87200878/150832954-bdfb249e-594e-4230-8410-baaaf7bdc8cc.png)
 ### Редактирование файла config.py
 Перейти в папку settings проекта и вписать в файл config.py токены сообщества и пользователя в поля token_group и token_user соответственно, а также id пользователя VK в поле user_id.
 ![Настройка config.py](https://user-images.githubusercontent.com/87200878/150670754-ac24e664-e7ee-4944-858b-0c12a9f01cc5.png)
