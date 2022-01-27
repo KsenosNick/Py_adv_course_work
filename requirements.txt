@@ -1,3 +1,4 @@
 requests
 SQLAlchemy~=1.4.29
 psycopg2
+vk-api
